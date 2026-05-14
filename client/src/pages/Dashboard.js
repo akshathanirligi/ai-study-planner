@@ -72,7 +72,7 @@ const [matchedCards, setMatchedCards] =
         try {
 
             const res = await axios.get(
-                "http://127.0.0.1:5000/api/study"
+                "http://ai-study-planner-1-9uvs.onrender.com/api/study"
             );
 
             setTasks(res.data);
@@ -92,7 +92,7 @@ const [matchedCards, setMatchedCards] =
         if (editingTask) {
 
             await axios.put(
-                `http://127.0.0.1:5000/api/study/${editingTask}`,
+                `http://ai-study-planner-1-9uvs.onrender.com/api/study/${editingTask}`,
                 {
                     subject,
                     studyNotes,
@@ -107,7 +107,7 @@ const [matchedCards, setMatchedCards] =
         } else {
 
             await axios.post(
-                "http://127.0.0.1:5000/api/study",
+                "http://ai-study-planner-1-9uvs.onrender.com/api/study",
                 {
                     subject,
                     studyNotes,
@@ -139,7 +139,7 @@ const [matchedCards, setMatchedCards] =
         try {
 
             await axios.delete(
-                `http://127.0.0.1:5000/api/study/${id}`
+                `http://ai-study-planner-1-9uvs.onrender.com/api/study/${id}`
             );
 
             fetchTasks();
