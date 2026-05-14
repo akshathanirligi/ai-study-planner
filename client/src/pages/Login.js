@@ -33,7 +33,7 @@ function Login() {
 
                 await axios.post(
 
-                    "http://localhost:5000/api/auth/signup",
+                    "https://ai-study-planner-1-9uvs.onrender.com/api/auth/login",
 
                     {
                         name,
@@ -51,7 +51,7 @@ function Login() {
                 const res =
                     await axios.post(
 
-                        "http://localhost:5000/api/auth/login",
+                        "https://ai-study-planner-1-9uvs.onrender.com/api/auth/login",
 
                         {
                             email,
