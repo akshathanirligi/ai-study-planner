@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config({
     path: "./server/.env"
@@ -11,6 +12,14 @@ app.use(express.json());
 
 app.get("/", (req, res) => {
     res.send("Backend Running");
+});
+
+mongoose.connect(process.env.MONGO_URI)
+.then(() => {
+    console.log("MongoDB Connected");
+})
+.catch((error) => {
+    console.log(error);
 });
 
 const PORT = process.env.PORT || 5000;
