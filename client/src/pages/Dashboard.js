@@ -18,19 +18,10 @@ function Dashboard() {
         }
     };
 
-    const addTask = async () => {
+    const deleteTask = async (id) => {
         try {
-            await axios.post("https://ai-study-planner-1-9uvs.onrender.com/api/study", {
-                subject,
-                studyNotes,
-                priority,
-                studyHours
-            });
+            await axios.delete(`https://ai-study-planner-1-9uvs.onrender.com/api/study/${id}`);
             fetchTasks();
-            setSubject("");
-            setStudyNotes("");
-            setPriority("Medium");
-            setStudyHours(1);
         } catch (error) {
             console.log(error.response?.data || error.message);
         }
@@ -43,22 +34,14 @@ function Dashboard() {
     return (
         <div className={darkMode ? "container dark" : "container light"}>
             <h1>AI Study Planner</h1>
-            <button className="theme-toggle" onClick={() => setDarkMode(!darkMode)}>
-                {darkMode ? "☀️ Light Mode" : "🌙 Dark Mode"}
-            </button>
-            <div className="form-container">
-                <input
-                    type="text"
-                    placeholder="Subject"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                />
-                <textarea
-                    placeholder="Study Notes"
-                    value={studyNotes}
-                    onChange={(e) => setStudyNotes(e.target.value)}
-                />
-                <button onClick={addTask}>Add Study Task</button>
+            <div className="task-container">
+                {tasks.map((task) => (
+                    <div className="task-card" key={task._id}>
+                        <h2>{task.subject}</h2>
+                        <p>{task.studyNotes}</p>
+                        <button onClick={() => deleteTask(task._id)}>Delete</button>
+                    </div>
+                ))}
             </div>
         </div>
     );
