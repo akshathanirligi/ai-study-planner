@@ -9,6 +9,8 @@ function Dashboard() {
     const [studyHours, setStudyHours] = useState(1);
     const [editingTask, setEditingTask] = useState(null);
     const [deadline, setDeadline] = useState("");
+    const [searchTerm, setSearchTerm] = useState("");
+    const [completedTasks, setCompletedTasks] = useState([]);
     const [darkMode, setDarkMode] = useState(true);
 
     const fetchTasks = async () => {
@@ -67,35 +69,23 @@ function Dashboard() {
     return (
         <div className={darkMode ? "container dark" : "container light"}>
             <h1>AI Study Planner</h1>
-            <div className="form-container">
-                <input
-                    type="text"
-                    placeholder="Subject"
-                    value={subject}
-                    onChange={(e) => setSubject(e.target.value)}
-                />
-                <textarea
-                    placeholder="Study Notes"
-                    value={studyNotes}
-                    onChange={(e) => setStudyNotes(e.target.value)}
-                />
-                <select value={priority} onChange={(e) => setPriority(e.target.value)}>
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
-                </select>
-                <input
-                    type="date"
-                    value={deadline}
-                    onChange={(e) => setDeadline(e.target.value)}
-                />
-                <input
-                    type="number"
-                    placeholder="Study Hours"
-                    value={studyHours}
-                    onChange={(e) => setStudyHours(e.target.value)}
-                />
-                <button onClick={addTask}>Add Study Task</button>
+            <input
+                type="text"
+                placeholder="Search Subjects..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-bar"
+            />
+            <div className="task-container">
+                {tasks
+                    .filter((task) => task.subject.toLowerCase().includes(searchTerm.toLowerCase()))
+                    .map((task) => (
+                        <div className="task-card" key={task._id}>
+                            <h2>{task.subject}</h2>
+                            <p>{task.studyNotes}</p>
+                            <button onClick={() => deleteTask(task._id)}>Delete</button>
+                        </div>
+                    ))}
             </div>
         </div>
     );
