@@ -1,27 +1,32 @@
-import React, { useEffect, useState } from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
+import React, { useState } from "react";
 
 function Dashboard() {
-    const weeklyData = [
-        { day: "Mon", hours: 2 },
-        { day: "Tue", hours: 4 },
-        { day: "Wed", hours: 3 },
-        { day: "Thu", hours: 5 },
-        { day: "Fri", hours: 2 },
-        { day: "Sat", hours: 6 },
-        { day: "Sun", hours: 4 }
-    ];
+    const [tasks, setTasks] = useState([]);
+    const [completedTasks, setCompletedTasks] = useState([]);
+    const completedCount = completedTasks.length;
+    const totalTasks = tasks.length;
+    const pendingTasks = totalTasks - completedCount;
+    const streak = completedCount * 2 + 1;
 
     return (
-        <div className="weekly-chart">
-            <h2>📈 Weekly Study Analytics</h2>
-            <LineChart width={700} height={300} data={weeklyData}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
-                <Tooltip />
-                <Line type="monotone" dataKey="hours" stroke="#38bdf8" strokeWidth={4} />
-            </LineChart>
+        <div>
+            <div className="streak-container">
+                🔥 Study Streak: <span>{streak} Days</span>
+            </div>
+            <div className="stats-container">
+                <div className="stat-card">
+                    <h3>Total Tasks</h3>
+                    <p>{totalTasks}</p>
+                </div>
+                <div className="stat-card">
+                    <h3>Completed</h3>
+                    <p>{completedCount}</p>
+                </div>
+                <div className="stat-card">
+                    <h3>Pending</h3>
+                    <p>{pendingTasks}</p>
+                </div>
+            </div>
         </div>
     );
 }
