@@ -1,37 +1,32 @@
 import React, { useState } from "react";
 
 function Dashboard() {
-    const emojis = ["🎯", "📚", "🚀", "🔥", "🎮", "💡"];
-    const gameCards = [...emojis, ...emojis].sort(() => Math.random() - 0.5);
-    const [flippedCards, setFlippedCards] = useState([]);
-    const [matchedCards, setMatchedCards] = useState([]);
+    const [question, setQuestion] = useState("");
+    const [answer, setAnswer] = useState("");
 
-    const flipCard = (index) => {
-        if (flippedCards.length === 2 || flippedCards.includes(index)) return;
-        const newFlipped = [...flippedCards, index];
-        setFlippedCards(newFlipped);
-        if (newFlipped.length === 2) {
-            const first = gameCards[newFlipped[0]];
-            const second = gameCards[newFlipped[1]];
-            if (first === second) setMatchedCards([...matchedCards, first]);
-            setTimeout(() => setFlippedCards([]), 800);
+    const askAI = () => {
+        if (question.toLowerCase().includes("dbms")) {
+            setAnswer("📘 Focus on normalization, SQL joins, and transactions.");
+        } else if (question.toLowerCase().includes("ai")) {
+            setAnswer("🤖 Revise machine learning algorithms and neural networks.");
+        } else if (question.toLowerCase().includes("network")) {
+            setAnswer("🌐 Practice OSI model, TCP/IP, and subnetting.");
+        } else {
+            setAnswer("✨ Stay consistent and revise daily for better learning.");
         }
     };
 
     return (
-        <div className="game-container">
-            <h2>🧩 Relaxation Memory Game</h2>
-            <div className="game-grid">
-                {gameCards.map((emoji, index) => (
-                    <div
-                        key={index}
-                        className={`game-card ${flippedCards.includes(index) || matchedCards.includes(emoji) ? "flipped" : ""}`}
-                        onClick={() => flipCard(index)}
-                    >
-                        {flippedCards.includes(index) || matchedCards.includes(emoji) ? emoji : "❓"}
-                    </div>
-                ))}
-            </div>
+        <div className="ai-chat-container">
+            <h2>🤖 AI Study Assistant</h2>
+            <input
+                type="text"
+                placeholder="Ask something..."
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+            />
+            <button onClick={askAI}>Ask AI</button>
+            {answer && <div className="ai-response">{answer}</div>}
         </div>
     );
 }
