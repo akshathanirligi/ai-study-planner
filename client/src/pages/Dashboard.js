@@ -1,25 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 function Dashboard() {
-    const [tasks, setTasks] = useState([]);
+    const [minutes, setMinutes] = useState(0);
+    const [seconds, setSeconds] = useState(10);
+    const [isActive, setIsActive] = useState(false);
+
+    useEffect(() => {
+        let interval = null;
+        if (isActive) {
+            interval = setInterval(() => {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(interval);
+                        setIsActive(false);
+                        const alarm = new Audio("https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg");
+                        alarm.play();
+                    } else {
+                        setMinutes(minutes - 1);
+                        setSeconds(59);
+                    }
+                } else {
+                    setSeconds(seconds - 1);
+                }
+            }, 1000);
+        }
+        return () => clearInterval(interval);
+    }, [isActive, seconds, minutes]);
 
     return (
-        <div className="task-container">
-            {tasks.map((task) => (
-                <div className="task-card" key={task._id}>
-                    <h2>{task.subject}</h2>
-                    {task.deadline && new Date(task.deadline).getTime() - new Date().getTime() < 3 * 24 * 60 * 60 * 1000 && (
-                        <p className="deadline-warning">⚠️ Deadline approaching!</p>
-                    )}
-                    <p className="ai-tip">
-                        {task.priority === "High"
-                            ? " Focus deeply and revise this subject twice today."
-                            : task.priority === "Medium"
-                            ? "📘 Practice consistently for better retention."
-                            : " Light revision is enough for today."}
-                    </p>
-                </div>
-            ))}
+        <div className="timer-section">
+            <h2>Pomodoro Timer</h2>
+            <div className="timer-display">
+                {String(minutes).padStart(2, "0")}:{String(seconds).padStart(2, "0")}
+            </div>
+            <div className="timer-buttons">
+                <button onClick={() => setIsActive(!isActive)}>
+                    {isActive ? "Pause" : "Start"}
+                </button>
+                <button onClick={() => { setMinutes(25); setSeconds(0); setIsActive(false); }}>
+                    Reset
+                </button>
+            </div>
         </div>
     );
 }
